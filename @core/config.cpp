@@ -4,7 +4,8 @@ class CfgPatches
 	{
 		requiredAddons[]=
 		{
-			"DZ_Data"
+			"DZ_Data",
+			"JM_CF_Scripts"
 		};
 	};
 };
@@ -17,6 +18,13 @@ class CfgMods
 
 		class defs
 		{
+			class gameScriptModule
+			{
+				value = "";
+				files[] = {
+					"Wasteland/scripts/3_game",
+				};
+			}
 			class worldScriptModule
 			{
 				value = "";

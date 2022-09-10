@@ -16,7 +16,7 @@ modded class PlayerBase
 
 		if ( GetGame().IsServer() && GetIdentity() )
 		{
-			WastelandPlayer wastelandPlayer = WastelandManager.GetInstance().GetPlayer(GetIdentity().GetPlainId());
+			WastelandPlayer wastelandPlayer = GetWasteland().GetPlayer(GetIdentity().GetPlainId());
 			SetWastelandTeam(wastelandPlayer.GetTeam());
 		}
 	}
@@ -39,9 +39,9 @@ modded class PlayerBase
 		}
 
 		if (m_WastelandTeam) {
-			if (m_WastelandTeam == WastelandTeam.TEAM_BLUFOR) {
+			if (m_WastelandTeam == WastelandTeams.Blufor) {
 				GetInventory().CreateAttachmentEx("Armband_Blue", slot_id);
-			} else if (m_WastelandTeam == WastelandTeam.TEAM_OPFOR) {
+			} else if (m_WastelandTeam == WastelandTeams.Opfor) {
 				GetInventory().CreateAttachmentEx("Armband_Red", slot_id);
 			}
 

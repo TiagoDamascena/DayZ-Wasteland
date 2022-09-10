@@ -1,7 +1,5 @@
 class WastelandManager
 {
-    static ref WastelandManager instance;
-
     private ref array< ref WastelandPlayer > m_WastelandPlayers = new ref array< ref WastelandPlayer >;
 
     void WastelandManager()
@@ -11,19 +9,9 @@ class WastelandManager
 
     void Init()
     {
-        GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLaterByName(instance, "SaveWastelandPlayers", 300 * 1000, true);
+        //GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLaterByName(instance, "SaveWastelandPlayers", 300 * 1000, true);
     }
 
-    static WastelandManager GetInstance()
-    {
-        if ( instance == NULL )
-        {
-            instance = new WastelandManager();
-        }
-        
-        return instance;
-    }
-	
 	void OnPlayerConnect(PlayerIdentity playerIdent)
 	{
 		GetPlayer(playerIdent.GetPlainId());
@@ -39,7 +27,7 @@ class WastelandManager
 
     private WastelandPlayer LoadPlayer( string pId )
     {
-        WastelandPlayer wastelandPlayer = new WastelandPlayer(pId);
+        ref WastelandPlayer wastelandPlayer = new WastelandPlayer(pId);
         m_WastelandPlayers.Insert(wastelandPlayer);
 
         return wastelandPlayer;
@@ -49,7 +37,7 @@ class WastelandManager
 	{
 		for ( int i = 0; i < m_WastelandPlayers.Count(); i++ )
         {
-            WastelandPlayer wastelandPlayer = m_WastelandPlayers.Get(i);
+            ref WastelandPlayer wastelandPlayer = m_WastelandPlayers.Get(i);
             if ( wastelandPlayer.GetPlayerId() == pId )
             {
                 m_WastelandPlayers.Remove(i);
@@ -64,7 +52,7 @@ class WastelandManager
     {
         for ( int i = 0; i < m_WastelandPlayers.Count(); i++ )
         {
-            WastelandPlayer wastelandPlayer = m_WastelandPlayers.Get(i);
+            ref WastelandPlayer wastelandPlayer = m_WastelandPlayers.Get(i);
             if ( wastelandPlayer.GetPlayerId() == pId )
             {
                 return wastelandPlayer;
@@ -73,4 +61,14 @@ class WastelandManager
 
         return LoadPlayer(pId);
     }
+}
+
+ref WastelandManager m_WastelandManager;
+WastelandManager GetWasteland()
+{
+    if (!m_WastelandManager) {
+        m_WastelandManager = new WastelandManager();
+    }
+
+    return m_WastelandManager;
 }

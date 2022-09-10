@@ -1,10 +1,13 @@
+enum WastelandTeams
+{
+    Independent,
+    Blufor,
+    Opfor,
+}
+
 class WastelandTeam
 {
     static const int NUM_OF_TEAMS = 3;
-	
-	static const int TEAM_INDEPENDENT 	= 0;
-	static const int TEAM_BLUFOR 		= 1;
-	static const int TEAM_OPFOR 		= 2;
 
     static int GenerateTeam()
     {
@@ -15,9 +18,9 @@ class WastelandTeam
     {
         switch (team)
         {
-            case 1:
+            case WastelandTeams.Blufor:
                 return "Blufor";
-            case 2:
+            case WastelandTeams.Opfor:
                 return "Opfor";
         }
 		
