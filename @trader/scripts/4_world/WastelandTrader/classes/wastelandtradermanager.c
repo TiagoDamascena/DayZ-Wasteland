@@ -32,6 +32,23 @@ class WastelandTraderManager
 		
 		return null;
 	}
+	
+	WastelandTraderSafezone CheckPlayerInSafezone(PlayerBase player)
+	{
+		ref array<ref WastelandTraderSafezone> safezones = m_WastelandTraderConfig.GetSafezones();
+		for ( int i = 0; i < safezones.Count(); i++ )
+		{
+			ref WastelandTraderSafezone safezone = safezones.Get(i);
+			
+			float distance = vector.Distance(safezone.GetPosition(), player.GetPosition());
+			if (distance <= safezone.GetRadius())
+			{
+				return safezone;
+			}
+		}
+		
+		return null;
+	}
 }
 
 ref WastelandTraderManager m_WastelandTraderManager;
