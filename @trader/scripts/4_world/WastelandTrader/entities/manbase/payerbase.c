@@ -26,8 +26,6 @@ modded class PlayerBase
 		if (isInSafezone != m_WastelandIsInSafezone)
 		{
 			m_WastelandIsInSafezone = isInSafezone;
-			
-			GetRPCManager().SendRPC("WastelandTrader", "RPCUpdateSafezoneState", new Param1< bool >( isInSafezone), true, GetIdentity());
 			SetSynchDirty();
 		}
 	}

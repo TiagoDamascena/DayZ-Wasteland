@@ -2,6 +2,7 @@ modded class MissionGameplay
 {
 	ref WastelandTraderSafezoneUI m_WastelandTraderSafezoneUI;
 	private bool m_WastelandInSafezone;
+	private bool m_WastelandSafezoneTimer;
 	
 	void MissionGameplay()
 	{
@@ -13,15 +14,20 @@ modded class MissionGameplay
 	
 	void RPCUpdateSafezoneState( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target )
 	{
-		Param1< bool > data
+		Param2< bool, int > data
 		if ( !ctx.Read( data ) ) return;
 		
 		bool inSafezone = data.param1;
+		int safezoneTimer = data.param2;
 
-		if ( inSafezone != m_WastelandInSafezone)
-		{
+		if ( inSafezone != m_WastelandInSafezone) {
 			m_WastelandInSafezone = inSafezone;
-			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallLaterByName(this, "UpdateSafezoneState", 500, false);
+			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallLaterByName(this, "UpdateSafezoneState", 0, false);
+		}
+		
+		if ( safezoneTimer != m_WastelandSafezoneTimer ) {
+			m_WastelandSafezoneTimer = safezoneTimer;
+			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallLaterByName(this, "UpdateSafezoneTimer", 0, false);
 		}
 	}
 	
@@ -30,5 +36,12 @@ modded class MissionGameplay
 		if ( !m_WastelandTraderSafezoneUI ) return;
 		
 		m_WastelandTraderSafezoneUI.UpdateInSafezone(m_WastelandInSafezone);
+	}
+	
+	void UpdateSafezoneTimer()
+	{
+		if ( !m_WastelandTraderSafezoneUI ) return;
+		
+		m_WastelandTraderSafezoneUI.UpdateAlertTimer(m_WastelandSafezoneTimer);
 	}
 }
