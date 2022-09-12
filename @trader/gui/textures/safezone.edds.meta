@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{8018278B0973BCB1}WastelandTrader/gui/textures/safezone.edds"
+ Author "tiago"
+ ChangeDate 733343018
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "safezone.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}
