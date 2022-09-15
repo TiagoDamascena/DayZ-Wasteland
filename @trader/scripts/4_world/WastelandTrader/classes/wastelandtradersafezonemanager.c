@@ -60,7 +60,5 @@ class WastelandTraderSafezoneManager
 			m_Player.SetIsInSafezone(isInSafezone);
 			GetRPCManager().SendRPC("WastelandTrader", "RPCUpdateSafezoneState", new Param2< bool, int >( m_IsInSafezone, m_AlertTime ), true, m_Player.GetIdentity());
 		}
-		
-		
 	}
 }
