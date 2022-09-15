@@ -30,6 +30,16 @@ modded class PlayerBase
 		}
 	}
 	
+	override bool CanBeRestrained()
+	{
+		if ( IsInSafezone() )
+		{
+			return false;
+		}
+		
+		return super.CanBeRestrained();
+	}
+	
 	override void OnScheduledTick(float deltaTime)
 	{
 		super.OnScheduledTick(deltaTime);

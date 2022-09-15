@@ -1,9 +1,8 @@
-modded class ActionInjectSelf: ActionSingleUseBase
+modded class ActionInjectTarget
 {
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if (player.IsInSafezone())
-		{
+		if (player.IsInSafezone()) {
 			return false;
 		}
 		
