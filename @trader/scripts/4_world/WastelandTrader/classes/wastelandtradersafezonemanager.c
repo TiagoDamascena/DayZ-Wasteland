@@ -37,6 +37,7 @@ class WastelandTraderSafezoneManager
 			}
 			
 			if (m_RestrictedAreaTick >= RESTRICTED_AREA_SEC) {
+				m_Player.SetAllowDamage(true);
 				m_Player.SetHealth( "GlobalHealth", "Health", 0 );
 				Print("Player is now dead");
 			}
@@ -51,6 +52,10 @@ class WastelandTraderSafezoneManager
 		int alertTime = 0;
 		if (m_RestrictedAreaTick > 0) {
 			alertTime = (int)(RESTRICTED_AREA_SEC - m_RestrictedAreaTick);
+		}
+		
+		if (isInSafezone != m_IsInSafezone) {
+			m_Player.SetAllowDamage(!isInSafezone);
 		}
 		
 		if (isInSafezone != m_IsInSafezone || alertTime != m_AlertTime) {
