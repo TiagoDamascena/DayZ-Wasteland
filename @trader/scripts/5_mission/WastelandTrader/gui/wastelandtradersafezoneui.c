@@ -31,9 +31,13 @@ class WastelandTraderSafezoneUI
 		m_InSafezoneIcon.Show(inSafezone);
 	}
 	
-	void UpdateAlertTimer(int seconds)
+	void UpdateShowAlert(bool showAlert)
+	{
+		m_AlertWindow.Show(showAlert);
+	}
+	
+	void UpdateAlertTime(int seconds)
 	{
 		m_CounterText.SetText(seconds.ToString());
-		m_AlertWindow.Show(seconds > 0);
 	}
 }

@@ -1,47 +1,63 @@
 modded class MissionGameplay
 {
-	ref WastelandTraderSafezoneUI m_WastelandTraderSafezoneUI;
-	private bool m_WastelandInSafezone;
-	private bool m_WastelandSafezoneTimer;
+	private ref WastelandTraderSafezoneUI m_WT_SafezoneUI;
+	private bool m_WT_InSafezone;
+	private bool m_WT_ShowAlert;
+	private int m_WT_AlertTime;
 	
 	void MissionGameplay()
 	{
-		m_WastelandTraderSafezoneUI = new WastelandTraderSafezoneUI();
-		m_WastelandInSafezone = false;
+		m_WT_SafezoneUI = new WastelandTraderSafezoneUI();
+		m_WT_InSafezone = false;
+		m_WT_ShowAlert = false;
+		m_WT_AlertTime = 0;
 		
-		GetRPCManager().AddRPC( "WastelandTrader", "RPCUpdateSafezoneState", this, SingeplayerExecutionType.Both );
+		GetRPCManager().AddRPC("WastelandTrader", "RPCUpdateSafezoneState", this, SingeplayerExecutionType.Both);
 	}
 	
-	void RPCUpdateSafezoneState( CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target )
+	void RPCUpdateSafezoneState(CallType type, ref ParamsReadContext ctx, ref PlayerIdentity sender, ref Object target)
 	{
-		Param2< bool, int > data
+		Param3< bool, bool, int > data;
 		if ( !ctx.Read( data ) ) return;
 		
 		bool inSafezone = data.param1;
-		int safezoneTimer = data.param2;
+		bool showAlert = data.param2;
+		int alertTime = data.param3;
 
-		if ( inSafezone != m_WastelandInSafezone) {
-			m_WastelandInSafezone = inSafezone;
-			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallLaterByName(this, "UpdateSafezoneState", 0, false);
+		if (inSafezone != m_WT_InSafezone) {
+			m_WT_InSafezone = inSafezone;
+			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallByName(this, "WT_UpdateInSafezone");
 		}
 		
-		if ( safezoneTimer != m_WastelandSafezoneTimer ) {
-			m_WastelandSafezoneTimer = safezoneTimer;
-			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallLaterByName(this, "UpdateSafezoneTimer", 0, false);
+		if (showAlert != m_WT_ShowAlert) {
+			m_WT_ShowAlert = showAlert;
+			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallByName(this, "WT_UpdateShowAlert");
+		}
+		
+		if (alertTime != m_WT_AlertTime) {
+			m_WT_AlertTime = alertTime;
+			GetGame().GetCallQueue( CALL_CATEGORY_GUI ).CallByName(this, "WT_UpdateAlertTime");
 		}
 	}
 	
-	void UpdateSafezoneState()
+	void WT_UpdateInSafezone()
 	{
-		if ( !m_WastelandTraderSafezoneUI ) return;
+		if ( !m_WT_SafezoneUI ) return;
 		
-		m_WastelandTraderSafezoneUI.UpdateInSafezone(m_WastelandInSafezone);
+		m_WT_SafezoneUI.UpdateInSafezone(m_WT_InSafezone);
 	}
 	
-	void UpdateSafezoneTimer()
+	void WT_UpdateShowAlert()
 	{
-		if ( !m_WastelandTraderSafezoneUI ) return;
+		if ( !m_WT_SafezoneUI ) return;
 		
-		m_WastelandTraderSafezoneUI.UpdateAlertTimer(m_WastelandSafezoneTimer);
+		m_WT_SafezoneUI.UpdateShowAlert(m_WT_ShowAlert);
+	}
+	
+	void WT_UpdateAlertTime()
+	{
+		if ( !m_WT_SafezoneUI ) return;
+		
+		m_WT_SafezoneUI.UpdateAlertTime(m_WT_AlertTime);
 	}
 }
