@@ -1,5 +1,6 @@
 modded class PlayerBase
 {
+	protected ref WastelandPlayer m_WastelandPlayer;
 	protected int m_WastelandTeam;
 	
 	override void Init()
@@ -16,8 +17,8 @@ modded class PlayerBase
 
 		if ( GetGame().IsServer() && GetIdentity() )
 		{
-			WastelandPlayer wastelandPlayer = GetWasteland().GetPlayer(GetIdentity().GetPlainId());
-			SetWastelandTeam(wastelandPlayer.GetTeam());
+			m_WastelandPlayer = GetWasteland().GetPlayer(GetIdentity().GetPlainId());
+			SetWastelandTeam(m_WastelandPlayer.GetTeam());
 		}
 	}
 	

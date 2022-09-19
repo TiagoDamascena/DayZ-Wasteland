@@ -12,15 +12,19 @@ class WastelandManager
         //GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLaterByName(instance, "SaveWastelandPlayers", 300 * 1000, true);
     }
 
-	void OnPlayerConnect(PlayerIdentity playerIdent)
+	void OnPlayerConnect(PlayerBase player)
 	{
-		GetPlayer(playerIdent.GetPlainId());
+		if ( player.GetIdentity() ) {
+			GetPlayer(player.GetIdentity().GetPlainId());
+		}
 	}
 	
 	void OnPlayerDisconnect(PlayerBase player)
 	{
 		if ( player.GetIdentity() ) {
-			GetPlayer(player.GetIdentity().GetPlainId()).SaveData();
+			ref WastelandPlayer wastelandPlayer = GetPlayer(player.GetIdentity().GetPlainId());
+			wastelandPlayer.SaveData();
+			
 			UnloadPlayer(player.GetIdentity().GetPlainId());
 		}
 	}

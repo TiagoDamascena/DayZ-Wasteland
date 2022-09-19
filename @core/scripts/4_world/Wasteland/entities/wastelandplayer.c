@@ -1,14 +1,20 @@
+class WastelandPlayerData
+{
+    int team;
+}
+
 class WastelandPlayer : RestCallback
 {
 	static const string DIR_WASTELAND = "$profile:Wasteland/";
 	static const string DIR_PLAYERS = DIR_WASTELAND + "Players/";
 	
-    private string id;
-    private int team;
+    private string m_Id;
+    private int m_Team;
 
     void WastelandPlayer(string pId)
     {
-        id = pId;
+        m_Id = pId;
+        m_Team = 0;
 
         Init();
     }
@@ -21,10 +27,10 @@ class WastelandPlayer : RestCallback
         if(!FileExist(DIR_PLAYERS))
 			MakeDirectory(DIR_PLAYERS);
 
-        if(FileExist(DIR_PLAYERS + id + ".json")) {
+        if(FileExist(DIR_PLAYERS + m_Id + ".json")) {
             LoadData();
         } else {
-            team = WastelandTeam.GenerateTeam();
+            m_Team = WastelandTeam.GenerateTeam();
 
             SaveData();
         }
@@ -32,21 +38,27 @@ class WastelandPlayer : RestCallback
 	
 	void LoadData()
 	{
-		JsonFileLoader<WastelandPlayer>.JsonLoadFile(DIR_PLAYERS + id + ".json", this);
+        WastelandPlayerData data = new WastelandPlayerData();
+		JsonFileLoader<WastelandPlayerData>.JsonLoadFile(DIR_PLAYERS + m_Id + ".json", data);
+
+        m_Team = data.team;
 	}
-	
+
 	void SaveData()
 	{
-		JsonFileLoader<WastelandPlayer>.JsonSaveFile(DIR_PLAYERS + id + ".json", this);
+        WastelandPlayerData data = new WastelandPlayerData();
+        data.team = m_Team;
+
+		JsonFileLoader<WastelandPlayerData>.JsonSaveFile(DIR_PLAYERS + m_Id + ".json", data);
 	}
 	
 	string GetPlayerId()
 	{
-		return id;
+		return m_Id;
 	}
 
     int GetTeam()
     {
-        return team;
+        return m_Team;
     }
 }
